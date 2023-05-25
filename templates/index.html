@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anonymous+Pro&family=Space+Grotesk&display=swap" rel="stylesheet">
+    <style>
+        *{
+            margin: 0 auto;
+        }
+        #wrapper{
+            text-align: center;
+            width: 800px;
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: 'Space Grotesk', sans-serif;
+            background-color:indigo;
+            color: ghostwhite;
+        }
+        h1{
+            margin-top: 20px;
+        }
+        #input_form{
+            margin-bottom: 30px;
+        }
+        #win{
+            background-color: mediumspringgreen;
+            color: mediumblue;
+        }
+        #higher_guess{
+            background-color: indianred;
+            color: ghostwhite;
+        }
+        #lower_guess{
+            background-color: slateblue;
+            color:ghostwhite
+        }
+        .card{
+            font-size: 16px;
+            height: 100px;
+            width: 300px;
+        }
+    </style>
+    <title>The Great Number Game</title>
+</head>
+<body>
+    <div id='wrapper'>
+        <h1>Welcome to the Great Number Game!</h1>
+        <!--<p>The secret number is: {{session['secret_number']}}</p>-->
+        <p>I'm thinking of a number between 1 and 100...</p>
+        <p>Take a guess!</p>
+        <div id="input_form">
+            <form action='/play' method='post'>
+            <label for='user_guess'>Your Guess:</label>
+            <input type='text' id='user_guess' name='user_guess' placeholder='1-100'>
+            <input type="submit" value="Guess!">
+        </div>
+        </form>
+        {% if 'user_guess' in session: %}
+            {% if session['user_guess'] == session['secret_number'] %}
+                <div class="card text-center card-sm" style="height: 100px;" id="win">
+                    <div class="card-body">
+                        <p>You picked the correct number!</p>
+                        <a href="/reset" class="btn btn-primary">Play Again?</a>
+                    </div>
+                </div>
+            {% elif session['user_guess'] < session['secret_number'] %}
+                <div class="card text-center card-sm" style="height: 100px;" id="higher_guess">
+                    <div class="card-body">
+                        <p>You guessed {{session['user_guess']}} but the secret number is <em>higher</em> than that...</p>
+                    </div>
+                </div>
+            {% else %}
+                <div class="card text-center card-sm" style="height: 100px;" id="lower_guess">
+                    <div class="card-body">
+                        <p>You guessed {{session['user_guess']}} but the secret number is <em>lower</em> than that...</p>
+                    </div>
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
+</body>
+</html>
